@@ -1,9 +1,9 @@
 #pragma once
 
-#include <config/command_line_arguments.h>
-#include <config/config_key_lookup.h>
-#include <config/config_writer.h>
-#include <util/components.h>
+#include "config/command_line_arguments.h"
+#include "config/config_key_lookup.h"
+#include "config/config_writer.h"
+#include "util/components.h"
 
 class ArgumentLoader {
 

@@ -1,5 +1,5 @@
-#include <util/components.h>
-#include <config/configuration.h>
+#include "util/components.h"
+#include "config/configuration.h"
 
 int main(int argc, char const** argv) {
 	Components components;

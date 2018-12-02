@@ -1,6 +1,6 @@
 #pragma once
 
-#include <config/config_key.h>
+#include "config/config_key.h"
 
 namespace ConfigKeys {
 	enum ConfigId: HashableConfigId {

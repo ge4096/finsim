@@ -1,8 +1,8 @@
 #pragma once
 
-#include <config/config_key.h>
-#include <config/config_value_factory.h>
-#include <test/unit_test.h>
+#include "config/config_key.h"
+#include "config/config_value_factory.h"
+#include "test/unit_test.h"
 
 class ConfigValueFactoryTest: public UnitTest {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <config/config_writer.h>
+#include "config/config_writer.h"
 #include <map>
 
 class MockConfigWriter: public ConfigWriter {

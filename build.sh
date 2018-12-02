@@ -1,6 +1,6 @@
 #!/bin/bash
 
-COMPILER="g++ -std=c++11 -Isrc -g -Wall -Wextra"
+COMPILER="g++ -std=c++11 -iquotesrc -g -Wall -Wextra"
 TARGET=finsim
 
 if [ $# -eq 0 ] || [ "$1" = "debug" ]; then
