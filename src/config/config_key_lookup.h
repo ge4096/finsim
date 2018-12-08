@@ -9,12 +9,16 @@ class ConfigKeyLookup {
 
 public:
 	class KeyNotFoundError: public std::exception {
-		public:
-			KeyNotFoundError() {}
-			~KeyNotFoundError() {}
-			char const* what() const noexcept override {
-				return "No matching config key found";
-			}
+	
+	public:
+		KeyNotFoundError() {}
+		
+		~KeyNotFoundError() {}
+		
+		char const* what() const noexcept override {
+			return "No matching config key found";
+		}
+	
 	};
 	
 	ConfigKeyLookup(ConfigKey const* keys) {
