@@ -7,6 +7,7 @@
 #include "test/config/command_line_arguments_test.h"
 #include "test/config/config_key_lookup_test.h"
 #include "test/config/config_value_factory_test.h"
+#include "test/account/checking_account_test.h"
 #include <iostream>
 #include <vector>
 
@@ -14,12 +15,13 @@ class UnitTests {
 
 public:
 	UnitTests() {
-		this->tests.push_back(new DateTest());
-		this->tests.push_back(new DollarsTest());
-		this->tests.push_back(new CommandLineArgumentsTest());
-		this->tests.push_back(new ConfigKeyLookupTest());
-		this->tests.push_back(new ConfigValueFactoryTest());
-		this->tests.push_back(new ArgumentLoaderTest());
+		this->tests = {new DateTest(),
+		               new DollarsTest(),
+		               new CommandLineArgumentsTest(),
+		               new ConfigKeyLookupTest(),
+		               new ConfigValueFactoryTest(),
+		               new ArgumentLoaderTest(),
+		               new CheckingAccountTest()};
 	}
 	
 	~UnitTests() {

@@ -52,16 +52,16 @@ private:
 	
 	void findMissingKey() {
 		ConfigKeyLookup lookup(ConfigKeyLookupTest::testKeys);
-		ASSERT_ERROR((void)lookup.getByFullName("MissingKey"), ConfigKeyLookup::KeyNotFoundError);
-		ASSERT_ERROR((void)lookup.getByShortName("m"), ConfigKeyLookup::KeyNotFoundError);
-		ASSERT_ERROR((void)lookup.getByShortName(""), ConfigKeyLookup::KeyNotFoundError);
-		ASSERT_ERROR((void)lookup.getById(ConfigKeys::ShowHelp), ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByFullName("MissingKey"), ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByShortName("m"), ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByShortName(""), ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getById(ConfigKeys::ShowHelp), ConfigKeyLookup::KeyNotFoundError);
 	}
 	
 	void sentinelNotRegistered() {
 		ConfigKeyLookup lookup(ConfigKeyLookupTest::testKeys);
-		ASSERT_ERROR((void)lookup.getByFullName(""), ConfigKeyLookup::KeyNotFoundError);
-		ASSERT_ERROR((void)lookup.getByShortName(""), ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByFullName(""), ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByShortName(""), ConfigKeyLookup::KeyNotFoundError);
 	}
 	
 	static ConfigKey const testKeys[];

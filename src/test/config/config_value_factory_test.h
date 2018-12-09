@@ -33,20 +33,20 @@ private:
 		                              2147483647);
 		ASSERT_EQUAL(getIntegerValue("-2147483648"),
 		                              -2147483648);
-		ASSERT_ERROR(getIntegerValue("2147483648"), std::runtime_error);
-		ASSERT_ERROR(getIntegerValue("-2147483649"), std::runtime_error);
+		ASSERT_THROW(getIntegerValue("2147483648"), std::runtime_error);
+		ASSERT_THROW(getIntegerValue("-2147483649"), std::runtime_error);
 	}
 	
 	void parseUnsignedIntegers() {
 		ASSERT_EQUAL(getUnsignedIntegerValue("0"), 0);
 		ASSERT_EQUAL(getUnsignedIntegerValue("1"), 1);
-		ASSERT_ERROR(getUnsignedIntegerValue("-1"), std::runtime_error);
+		ASSERT_THROW(getUnsignedIntegerValue("-1"), std::runtime_error);
 		ASSERT_EQUAL(getUnsignedIntegerValue("2147483647"),
 		                                      2147483647);
-		ASSERT_ERROR(getUnsignedIntegerValue("-2147483648"), std::runtime_error);
+		ASSERT_THROW(getUnsignedIntegerValue("-2147483648"), std::runtime_error);
 		ASSERT_EQUAL(getUnsignedIntegerValue("4294967295"),
 		                                      4294967295);
-		ASSERT_ERROR(getUnsignedIntegerValue("-4294967296"), std::runtime_error);
+		ASSERT_THROW(getUnsignedIntegerValue("-4294967296"), std::runtime_error);
 	}
 	
 	void parseFloatingPoints() {
@@ -58,8 +58,8 @@ private:
 		ASSERT_EQUAL(getBooleanValue("Y"), true);
 		ASSERT_EQUAL(getBooleanValue("f"), false);
 		ASSERT_EQUAL(getBooleanValue("No"), false);
-		ASSERT_ERROR(getBooleanValue("maybe"), std::runtime_error);
-		ASSERT_ERROR(getBooleanValue(""), std::runtime_error);
+		ASSERT_THROW(getBooleanValue("maybe"), std::runtime_error);
+		ASSERT_THROW(getBooleanValue(""), std::runtime_error);
 	}
 	
 	void parseStrings() {

@@ -62,7 +62,7 @@
     }                                                                                     \
 }
 
-#define ASSERT_ERROR(command, error) {                                        \
+#define ASSERT_THROW(command, error) {                                        \
     try {                                                                     \
         command;                                                              \
         ASSERTION_FAILURE_HEADER();                                           \

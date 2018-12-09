@@ -67,21 +67,36 @@ public:
 		}
 	}
 	
-	Dollars operator+(Dollars const& credit) {
+	Dollars operator+(Dollars const& credit) const {
 		return Dollars(0, this->cents + credit.cents);
 	}
 	
-	Dollars operator-(Dollars const& debit) {
+	Dollars operator+=(Dollars const& credit) {
+		this->cents += credit.cents;
+		return *this;
+	}
+	
+	Dollars operator-(Dollars const& debit) const {
 		return Dollars(0, this->cents - debit.cents);
 	}
 	
-	Dollars operator*(double factor) {
+	Dollars operator-=(Dollars const& debit) {
+		this->cents -= debit.cents;
+		return *this;
+	}
+	
+	Dollars operator*(double factor) const {
 		double newCents = this->cents * factor;
 		double roundingCorrection = 0.499;
 		if(newCents < 0) {
 			roundingCorrection *= -1;
 		}
 		return Dollars(0, newCents + roundingCorrection);
+	}
+	
+	Dollars operator*=(double factor) {
+		*this = (*this * factor);
+		return *this;
 	}
 	
 	bool operator==(Dollars const& other) const {
@@ -116,4 +131,8 @@ private:
 std::ostream& operator<<(std::ostream& outputStream, Dollars const& dollars) {
 	dollars.printTo(outputStream);
 	return outputStream;
+}
+
+Dollars operator*(double const& factor, Dollars const& amount) {
+	return (amount * factor);
 }

@@ -107,63 +107,81 @@ private:
 	}
 	
 	void toString() {
-		assertStringMatch(Dollars(), "$0.00");
-		assertStringMatch(Dollars(0, 1), "$0.01");
-		assertStringMatch(Dollars(0, -1), "($0.01)");
-		assertStringMatch(Dollars(1), "$1.00");
-		assertStringMatch(Dollars(-1), "($1.00)");
-		assertStringMatch(Dollars(1123012001000, 12), "$1,123,012,001,000.12");
+		this->assertStringMatch(Dollars(), "$0.00");
+		this->assertStringMatch(Dollars(0, 1), "$0.01");
+		this->assertStringMatch(Dollars(0, -1), "($0.01)");
+		this->assertStringMatch(Dollars(1), "$1.00");
+		this->assertStringMatch(Dollars(-1), "($1.00)");
+		this->assertStringMatch(Dollars(1123012001000, 12), "$1,123,012,001,000.12");
+	}
+	
+	void testAdd(Dollars d1, Dollars d2, Dollars expected) {
+		ASSERT_EQUAL(d1 + d2, expected);
+		d1 += d2;
+		ASSERT_EQUAL(d1, expected);
 	}
 	
 	void add() {
-		ASSERT_EQUAL(Dollars() + Dollars(), Dollars());
-		ASSERT_EQUAL(Dollars(1) + Dollars(), Dollars(1));
-		ASSERT_EQUAL(Dollars() + Dollars(1), Dollars(1));
-		ASSERT_EQUAL(Dollars(1) + Dollars(1), Dollars(2));
-		ASSERT_EQUAL(Dollars(-1) + Dollars(), Dollars(-1));
-		ASSERT_EQUAL(Dollars() + Dollars(-1), Dollars(-1));
-		ASSERT_EQUAL(Dollars(-1) + Dollars(-1), Dollars(-2));
-		ASSERT_EQUAL(Dollars(1) + Dollars(-1), Dollars());
-		ASSERT_EQUAL(Dollars(-1) + Dollars(1), Dollars());
+		this->testAdd(Dollars(),   Dollars(),   Dollars());
+		this->testAdd(Dollars(1),  Dollars(),   Dollars(1));
+		this->testAdd(Dollars(),   Dollars(1),  Dollars(1));
+		this->testAdd(Dollars(1),  Dollars(1),  Dollars(2));
+		this->testAdd(Dollars(-1), Dollars(),   Dollars(-1));
+		this->testAdd(Dollars(),   Dollars(-1), Dollars(-1));
+		this->testAdd(Dollars(-1), Dollars(-1), Dollars(-2));
+		this->testAdd(Dollars(1),  Dollars(-1), Dollars());
+		this->testAdd(Dollars(-1), Dollars(1),  Dollars());
 		
-		ASSERT_EQUAL(Dollars(0, 1) + Dollars(1), Dollars(1, 1));
-		ASSERT_EQUAL(Dollars(1, 1) + Dollars(2, 2), Dollars(3, 3));
-		ASSERT_EQUAL(Dollars(0, 99) + Dollars(0, 1), Dollars(1));
+		this->testAdd(Dollars(0, 1),  Dollars(1),    Dollars(1, 1));
+		this->testAdd(Dollars(1, 1),  Dollars(2, 2), Dollars(3, 3));
+		this->testAdd(Dollars(0, 99), Dollars(0, 1), Dollars(1));
+	}
+	
+	void testSubtract(Dollars d1, Dollars d2, Dollars expected) {
+		ASSERT_EQUAL(d1 - d2, expected);
+		d1 -= d2;
+		ASSERT_EQUAL(d1, expected);
 	}
 	
 	void subtract() {
-		ASSERT_EQUAL(Dollars() - Dollars(), Dollars());
-		ASSERT_EQUAL(Dollars(1) - Dollars(), Dollars(1));
-		ASSERT_EQUAL(Dollars() - Dollars(1), Dollars(-1));
-		ASSERT_EQUAL(Dollars(1) - Dollars(1), Dollars());
-		ASSERT_EQUAL(Dollars(-1) - Dollars(), Dollars(-1));
-		ASSERT_EQUAL(Dollars() - Dollars(-1), Dollars(1));
-		ASSERT_EQUAL(Dollars(-1) - Dollars(-1), Dollars());
-		ASSERT_EQUAL(Dollars(1) - Dollars(-1), Dollars(2));
-		ASSERT_EQUAL(Dollars(-1) - Dollars(1), Dollars(-2));
+		this->testSubtract(Dollars(),   Dollars(),   Dollars());
+		this->testSubtract(Dollars(1),  Dollars(),   Dollars(1));
+		this->testSubtract(Dollars(),   Dollars(1),  Dollars(-1));
+		this->testSubtract(Dollars(1),  Dollars(1),  Dollars());
+		this->testSubtract(Dollars(-1), Dollars(),   Dollars(-1));
+		this->testSubtract(Dollars(),   Dollars(-1), Dollars(1));
+		this->testSubtract(Dollars(-1), Dollars(-1), Dollars());
+		this->testSubtract(Dollars(1),  Dollars(-1), Dollars(2));
+		this->testSubtract(Dollars(-1), Dollars(1),  Dollars(-2));
 		
-		ASSERT_EQUAL(Dollars(1, 1) - Dollars(1), Dollars(0, 1));
-		ASSERT_EQUAL(Dollars(1, 1) - Dollars(0, 1), Dollars(1));
-		ASSERT_EQUAL(Dollars(3, 3) - Dollars(2, 2), Dollars(1, 1));
-		ASSERT_EQUAL(Dollars(1) - Dollars(0, 1), Dollars(0, 99));
+		this->testSubtract(Dollars(1, 1), Dollars(1),    Dollars(0, 1));
+		this->testSubtract(Dollars(1, 1), Dollars(0, 1), Dollars(1));
+		this->testSubtract(Dollars(3, 3), Dollars(2, 2), Dollars(1, 1));
+		this->testSubtract(Dollars(1),    Dollars(0, 1), Dollars(0, 99));
+	}
+	
+	void testMultiply(Dollars d1, double factor, Dollars expected) {
+		ASSERT_EQUAL(d1 * factor, expected);
+		d1 *= factor;
+		ASSERT_EQUAL(d1, expected);
 	}
 	
 	void multiply() {
-		ASSERT_EQUAL(Dollars() * 10, Dollars());
-		ASSERT_EQUAL(Dollars(10) * 0, Dollars());
+		this->testMultiply(Dollars(),   10, Dollars());
+		this->testMultiply(Dollars(10), 0,  Dollars());
 		
-		ASSERT_EQUAL(Dollars(10) * 1, Dollars(10));
-		ASSERT_EQUAL(Dollars(10) * 2, Dollars(20));
-		ASSERT_EQUAL(Dollars(12, 34) * 2, Dollars(24, 68));
-		ASSERT_EQUAL(Dollars(12, 34) * 100, Dollars(1234));
+		this->testMultiply(Dollars(10),     1,   Dollars(10));
+		this->testMultiply(Dollars(10),     2,   Dollars(20));
+		this->testMultiply(Dollars(12, 34), 2,   Dollars(24, 68));
+		this->testMultiply(Dollars(12, 34), 100, Dollars(1234));
 		
-		ASSERT_EQUAL(Dollars(12, 34) * -1, Dollars(-12, -34));
-		ASSERT_EQUAL(Dollars(-12, -34) * -1, Dollars(12, 34));
+		this->testMultiply(Dollars(12, 34),   -1, Dollars(-12, -34));
+		this->testMultiply(Dollars(-12, -34), -1, Dollars(12, 34));
 		
-		ASSERT_EQUAL(Dollars(1) * 1.01, Dollars(1, 1));
-		ASSERT_EQUAL(Dollars(1) * 0.99, Dollars(0, 99));
-		ASSERT_EQUAL(Dollars(1) * 1.001, Dollars(1));
-		ASSERT_EQUAL(Dollars(1) * 0.999, Dollars(1));
+		this->testMultiply(Dollars(1), 1.01,  Dollars(1, 1));
+		this->testMultiply(Dollars(1), 0.99,  Dollars(0, 99));
+		this->testMultiply(Dollars(1), 1.001, Dollars(1));
+		this->testMultiply(Dollars(1), 0.999, Dollars(1));
 	}
 
 };

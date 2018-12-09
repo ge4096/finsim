@@ -23,12 +23,12 @@ public:
 
 private:
 	void invalidDates() {
-		ASSERT_ERROR(Date(1970, 0, 0), std::out_of_range);
-		ASSERT_ERROR(Date(1970, 0, 1), std::out_of_range);
-		ASSERT_ERROR(Date(1970, 1, 0), std::out_of_range);
-		ASSERT_ERROR(Date(1970, 1, 32), std::out_of_range);
-		ASSERT_ERROR(Date(1970, 2, 29), std::out_of_range);
-		ASSERT_ERROR(Date(1970, 13, 1), std::out_of_range);
+		ASSERT_THROW(Date(1970, 0, 0), std::out_of_range);
+		ASSERT_THROW(Date(1970, 0, 1), std::out_of_range);
+		ASSERT_THROW(Date(1970, 1, 0), std::out_of_range);
+		ASSERT_THROW(Date(1970, 1, 32), std::out_of_range);
+		ASSERT_THROW(Date(1970, 2, 29), std::out_of_range);
+		ASSERT_THROW(Date(1970, 13, 1), std::out_of_range);
 	}
 	
 	void comparisons() {
