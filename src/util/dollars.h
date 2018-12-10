@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <ostream>
+#include <string>
 #include <vector>
 
 class Dollars {
@@ -22,6 +23,51 @@ public:
 		}
 		
 		this->cents = (dollars * 100) + cents;
+	}
+	
+	Dollars(std::string const& fromString) {
+		this->cents = 0;
+		bool decimalFound = false;
+		bool isNegative = false;
+		size_t parseStartIndex = 0;
+		size_t parseEndIndex = fromString.length();
+		if((fromString.front() == '(') && (fromString.back() == ')')) {
+			isNegative = true;
+			parseStartIndex += 1;
+			parseEndIndex -= 1;
+		}
+		
+		for(size_t i = parseStartIndex; i < parseEndIndex; ++i) {
+			if((fromString[i] >= '0') && (fromString[i] <= '9')) {
+				this->cents = (this->cents * 10) + (fromString[i] - '0');
+			}
+			else if(fromString[i] == '.') {
+				decimalFound = true;
+				if(i != (parseEndIndex - 3)) {
+					throw std::runtime_error("Misplaced decimal point parsed");
+				}
+			}
+			else if(fromString[i] == '$') {
+				if(i != parseStartIndex) {
+					throw std::runtime_error("Unexpected character parsed");
+				}
+			}
+			else if(fromString[i] == ',') {
+				if(decimalFound) {
+					throw std::runtime_error("Unexpected character parsed");
+				}
+			}
+			else {
+				throw std::runtime_error("Unexpected character parsed");
+			}
+		}
+		
+		if(!decimalFound) {
+			this->cents *= 100;
+		}
+		if(isNegative) {
+			this->cents *= -1;
+		}
 	}
 	
 	void printTo(std::ostream& outputStream) const {

@@ -4,6 +4,7 @@
 #include "util/dollars.h"
 #include <functional>
 #include <sstream>
+#include <stdexcept>
 
 class DollarsTest: public UnitTest {
 
@@ -17,6 +18,7 @@ public:
 		RUN_TEST_CASE(greaterThan);
 		RUN_TEST_CASE(greaterThanOrEqual);
 		RUN_TEST_CASE(toString);
+		RUN_TEST_CASE(fromString);
 		RUN_TEST_CASE(add);
 		RUN_TEST_CASE(subtract);
 		RUN_TEST_CASE(multiply);
@@ -113,6 +115,35 @@ private:
 		this->assertStringMatch(Dollars(1), "$1.00");
 		this->assertStringMatch(Dollars(-1), "($1.00)");
 		this->assertStringMatch(Dollars(1123012001000, 12), "$1,123,012,001,000.12");
+	}
+	
+	void fromString() {
+		ASSERT_EQUAL(Dollars(""), Dollars());
+		ASSERT_EQUAL(Dollars("0"), Dollars());
+		ASSERT_EQUAL(Dollars("$0"), Dollars());
+		ASSERT_EQUAL(Dollars("0.00"), Dollars());
+		ASSERT_EQUAL(Dollars("$0.00"), Dollars());
+		ASSERT_THROW(Dollars("0.0"), std::runtime_error);
+		ASSERT_THROW(Dollars("$0.0"), std::runtime_error);
+		ASSERT_THROW(Dollars("0.000"), std::runtime_error);
+		ASSERT_THROW(Dollars("$0.000"), std::runtime_error);
+		
+		ASSERT_EQUAL(Dollars("$1"), Dollars(1));
+		ASSERT_EQUAL(Dollars("$1.00"), Dollars(1));
+		ASSERT_EQUAL(Dollars("$1.01"), Dollars(1, 1));
+		ASSERT_EQUAL(Dollars("$1,123,012,001,000.12"), Dollars(1123012001000, 12));
+		
+		ASSERT_EQUAL(Dollars("()"), Dollars());
+		ASSERT_EQUAL(Dollars("($0)"), Dollars());
+		ASSERT_EQUAL(Dollars("($0.00)"), Dollars());
+		ASSERT_THROW(Dollars("$(0)"), std::runtime_error);
+		ASSERT_THROW(Dollars("($0"), std::runtime_error);
+		ASSERT_THROW(Dollars("$0)"), std::runtime_error);
+		
+		ASSERT_EQUAL(Dollars("($1)"), Dollars(-1));
+		ASSERT_EQUAL(Dollars("($1.00)"), Dollars(-1));
+		ASSERT_EQUAL(Dollars("($1.01)"), Dollars(-1, -1));
+		ASSERT_EQUAL(Dollars("($1,123,012,001,000.12)"), Dollars(-1123012001000, -12));
 	}
 	
 	void testAdd(Dollars d1, Dollars d2, Dollars expected) {
