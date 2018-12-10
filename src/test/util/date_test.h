@@ -11,7 +11,9 @@ public:
 	bool /* UnitTest:: */ run() override {
 		START_TEST(DateTest);
 		RUN_TEST_CASE(invalidDates);
-		RUN_TEST_CASE(comparisons);
+		RUN_TEST_CASE(dayComparisons);
+		RUN_TEST_CASE(monthComparisons);
+		RUN_TEST_CASE(yearComparisons);
 		RUN_TEST_CASE(toString);
 		RUN_TEST_CASE(dayOfWeek);
 		RUN_TEST_CASE(lastDayOfMonth);
@@ -31,11 +33,7 @@ private:
 		ASSERT_THROW(Date(1970, 13, 1), std::out_of_range);
 	}
 	
-	void comparisons() {
-		Date day1(1970, 1, 1);
-		Date day2(1970, 1, 2);
-		Date day3(1970, 1, 3);
-		
+	void testComparisons(Date const& day1, Date const& day2, Date const& day3) {
 		ASSERT_TRUE(day1 == day1);
 		ASSERT_FALSE(day1 == day2);
 		
@@ -57,6 +55,30 @@ private:
 		ASSERT_FALSE(day1 >= day2);
 		ASSERT_TRUE(day2 >= day2);
 		ASSERT_TRUE(day3 >= day2);
+	}
+	
+	void dayComparisons() {
+		Date day1(1970, 1, 1);
+		Date day2(1970, 1, 2);
+		Date day3(1970, 1, 3);
+		
+		this->testComparisons(day1, day2, day3);
+	}
+	
+	void monthComparisons() {
+		Date day1(1970, 1, 3);
+		Date day2(1970, 2, 2);
+		Date day3(1970, 3, 1);
+		
+		this->testComparisons(day1, day2, day3);
+	}
+	
+	void yearComparisons() {
+		Date day1(1970, 3, 1);
+		Date day2(1971, 2, 2);
+		Date day3(1972, 1, 3);
+		
+		this->testComparisons(day1, day2, day3);
 	}
 	
 	void assertStringMatch(Date const& date, std::string const& expectedString) {

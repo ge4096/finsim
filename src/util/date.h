@@ -80,33 +80,33 @@ public:
 	}
 	
 	void printTo(std::ostream& outputStream) const {
-		outputStream << year;
+		outputStream << this->date.date.year;
 		
-		if(this->month < 10) {
-			outputStream << "-0" << static_cast<uint32_t>(this->month);
+		if(this->date.date.month < 10) {
+			outputStream << "-0" << static_cast<uint32_t>(this->date.date.month);
 		}
 		else {
-			outputStream << "-" << static_cast<uint32_t>(this->month);
+			outputStream << "-" << static_cast<uint32_t>(this->date.date.month);
 		}
 		
-		if(this->dayOfMonth < 10) {
-			outputStream << "-0" << static_cast<uint32_t>(this->dayOfMonth);
+		if(this->date.date.dayOfMonth < 10) {
+			outputStream << "-0" << static_cast<uint32_t>(this->date.date.dayOfMonth);
 		}
 		else {
-			outputStream << "-" << static_cast<uint32_t>(this->dayOfMonth);
+			outputStream << "-" << static_cast<uint32_t>(this->date.date.dayOfMonth);
 		}
 	}
 	
 	uint16_t getYear() const {
-		return this->year;
+		return this->date.date.year;
 	}
 	
 	uint8_t getMonth() const {
-		return this->month;
+		return this->date.date.month;
 	}
 	
 	uint8_t getDayOfMonth() const {
-		return this->dayOfMonth;
+		return this->date.date.dayOfMonth;
 	}
 	
 	bool isLastDayOfMonth() const {
@@ -123,14 +123,14 @@ public:
 	
 	Date const& operator++() {
 		if(!(this->lastDayOfMonth)) {
-			setDayOfMonth(this->dayOfMonth + 1);
+			setDayOfMonth(this->date.date.dayOfMonth + 1);
 		}
 		else if(!(this->lastDayOfYear)) {
-			setMonth(this->month + 1);
+			setMonth(this->date.date.month + 1);
 			setDayOfMonth(1);
 		}
 		else {
-			setYear(this->year + 1);
+			setYear(this->date.date.year + 1);
 			setMonth(1);
 			setDayOfMonth(1);
 		}
@@ -140,32 +140,32 @@ public:
 	}
 	
 	bool operator==(Date const& other) const {
-		return (this->getComparable() == other.getComparable());
+		return (this->date.comparableDate == other.date.comparableDate);
 	}
 	
 	bool operator!=(Date const& other) const {
-		return (this->getComparable() != other.getComparable());
+		return (this->date.comparableDate != other.date.comparableDate);
 	}
 	
 	bool operator<(Date const& other) const {
-		return (this->getComparable() < other.getComparable());
+		return (this->date.comparableDate < other.date.comparableDate);
 	}
 	
 	bool operator<=(Date const& other) const {
-		return (this->getComparable() <= other.getComparable());
+		return (this->date.comparableDate <= other.date.comparableDate);
 	}
 	
 	bool operator>(Date const& other) const {
-		return (this->getComparable() > other.getComparable());
+		return (this->date.comparableDate > other.date.comparableDate);
 	}
 	
 	bool operator>=(Date const& other) const {
-		return (this->getComparable() >= other.getComparable());
+		return (this->date.comparableDate >= other.date.comparableDate);
 	}
 
 private:
 	void setYear(uint16_t year) {
-		this->year = year;
+		this->date.date.year = year;
 		
 		if((year % 4) != 0) {
 			this->leapYear = false;
@@ -186,27 +186,27 @@ private:
 			throw std::out_of_range("Month does not exist");
 		}
 		
-		this->month = month;
+		this->date.date.month = month;
 	}
 	
 	void setDayOfMonth(uint8_t dayOfMonth) {
 		uint8_t daysInMonth;
 		if(this->leapYear) {
-			daysInMonth = Date::leapMonthLengths[this->month - 1];
+			daysInMonth = Date::leapMonthLengths[this->date.date.month - 1];
 		}
 		else {
-			daysInMonth = Date::nonleapMonthLengths[this->month - 1];
+			daysInMonth = Date::nonleapMonthLengths[this->date.date.month - 1];
 		}
 		
 		if((dayOfMonth == 0) || (dayOfMonth > daysInMonth)){
 			throw std::out_of_range("Day does not exist");
 		}
 		
-		this->dayOfMonth = dayOfMonth;
+		this->date.date.dayOfMonth = dayOfMonth;
 		
 		if(dayOfMonth == daysInMonth) {
 			this->lastDayOfMonth = true;
-			if(this->month == Date::monthsInYear) {
+			if(this->date.date.month == Date::monthsInYear) {
 				this->lastDayOfYear = true;
 			}
 			else {
@@ -219,14 +219,16 @@ private:
 		}
 	}
 	
-	uint32_t getComparable() const {
-		return ((this->year << 16) | (this->month << 8) | this->dayOfMonth);
-	}
+	union EfficientDate {
+		struct __attribute__((packed, aligned(4))) {
+			uint8_t dayOfMonth;
+			uint8_t month;
+			uint16_t year;
+		} date;
+		uint32_t comparableDate;
+	} date;
 	
-	uint16_t year;
 	bool leapYear;
-	uint8_t month;
-	uint8_t dayOfMonth;
 	bool lastDayOfMonth;
 	bool lastDayOfYear;
 	DayOfWeek dayOfWeek;
