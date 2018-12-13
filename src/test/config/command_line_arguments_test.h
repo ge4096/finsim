@@ -22,7 +22,7 @@ private:
 	void noArguments() {
 		char const* programName = "program";
 		char const* argv[] = {programName};
-		constexpr int argc = sizeof(argv) / sizeof(char const*);
+		constexpr int argc = sizeof(argv) / sizeof(argv[0]);
 		
 		CommandLineArguments arguments(argc, argv);
 		ASSERT_TRUE(arguments.begin() == arguments.end());
@@ -32,7 +32,7 @@ private:
 		char const* programName = "program";
 		char const* argumentName = "-a";
 		char const* argv[] = {programName, argumentName};
-		constexpr int argc = sizeof(argv) / sizeof(char const*);
+		constexpr int argc = sizeof(argv) / sizeof(argv[0]);
 		
 		CommandLineArguments arguments(argc, argv);
 		auto argument = arguments.begin();
@@ -46,7 +46,7 @@ private:
 		char const* programName = "program";
 		char const* argumentName = "--abc";
 		char const* argv[] = {programName, argumentName};
-		constexpr int argc = sizeof(argv) / sizeof(char const*);
+		constexpr int argc = sizeof(argv) / sizeof(argv[0]);
 		
 		CommandLineArguments arguments(argc, argv);
 		auto argument = arguments.begin();
@@ -61,7 +61,7 @@ private:
 		char const* argumentName = "-a";
 		char const* argumentValue = "b";
 		char const* argv[] = {programName, argumentName, argumentValue};
-		constexpr int argc = sizeof(argv) / sizeof(char const*);
+		constexpr int argc = sizeof(argv) / sizeof(argv[0]);
 		
 		CommandLineArguments arguments(argc, argv);
 		auto argument = arguments.begin();
@@ -76,7 +76,7 @@ private:
 		char const* argumentName = "--abc";
 		char const* argumentValue = "def";
 		char const* argv[] = {programName, argumentName, argumentValue};
-		constexpr int argc = sizeof(argv) / sizeof(char const*);
+		constexpr int argc = sizeof(argv) / sizeof(argv[0]);
 		
 		CommandLineArguments arguments(argc, argv);
 		auto argument = arguments.begin();
@@ -87,16 +87,18 @@ private:
 	}
 	
 	void multipleArguments() {
-		char const* programName = (char*)"program";
-		char const* singleNoValue = (char*)"-a";
-		char const* singleWithValue = (char*)"-b";
-		char const* singleValue = (char*)"cde";
-		char const* multiWithValue = (char*)"--fgh";
-		char const* multiValue = (char*)"i";
-		char const* multiNoValue = (char*)"--jkl";
-		char const* argv[] = {programName, singleNoValue, singleWithValue, singleValue,
-		                                   multiWithValue, multiValue, multiNoValue};
-		constexpr int argc = sizeof(argv) / sizeof(char const*);
+		char const* programName = "program";
+		char const* singleNoValue = "-a";
+		char const* singleWithValue = "-b";
+		char const* singleValue = "cde";
+		char const* multiWithValue = "--fgh";
+		char const* multiValue = "i";
+		char const* multiNoValue = "--jkl";
+		char const* argv[] = {programName, singleNoValue,
+		                      singleWithValue, singleValue,
+		                      multiWithValue, multiValue,
+		                      multiNoValue};
+		constexpr int argc = sizeof(argv) / sizeof(argv[0]);
 		
 		CommandLineArguments arguments(argc, argv);
 		auto argument = arguments.begin();
@@ -116,12 +118,13 @@ private:
 	}
 	
 	void malformedArguments() {
-		char const* programName = (char*)"program";
-		char const* notFlagged = (char*)"abc";
-		char const* onlyOneHyphen = (char*)"-def";
-		char const* invalidSingle = (char*)"--";
-		char const* argv[] = {programName, notFlagged, onlyOneHyphen, invalidSingle};
-		constexpr int argc = sizeof(argv) / sizeof(char const*);
+		char const* programName = "program";
+		char const* notFlagged = "abc";
+		char const* onlyOneHyphen = "-def";
+		char const* invalidSingle = "--";
+		char const* argv[] = {programName, notFlagged,
+		                      onlyOneHyphen, invalidSingle};
+		constexpr int argc = sizeof(argv) / sizeof(argv[0]);
 		
 		CommandLineArguments arguments(argc, argv);
 		ASSERT_TRUE(arguments.begin() == arguments.end());

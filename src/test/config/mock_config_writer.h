@@ -6,7 +6,8 @@
 class MockConfigWriter: public ConfigWriter {
 
 public:
-	void /* ConfigWriter:: */ writeValue(ConfigKey const& key, std::string const& value) override {
+	void /* ConfigWriter:: */ writeValue(ConfigKey const& key,
+	                                     std::string const& value) override {
 		this->values.emplace(key.id, value);
 	}
 	

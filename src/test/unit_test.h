@@ -52,14 +52,16 @@
     }                                                                       \
 }
 
-#define ASSERT_EQUAL(actual, expected) {                                                  \
-    if((actual) != (expected)) {                                                          \
-        ASSERTION_FAILURE_HEADER();                                                       \
-        std::cout << TEST_PRINT_INDENT #actual " does not match " #expected << std::endl; \
-        std::cout << TEST_PRINT_INDENT "Actual: " << (actual) << std::endl;               \
-        std::cout << TEST_PRINT_INDENT "Expected: " << (expected) << std::endl;           \
-        this->lastTestCasePassed = false;                                                 \
-    }                                                                                     \
+#define ASSERT_EQUAL(actual, expected) {                                    \
+    if((actual) != (expected)) {                                            \
+        ASSERTION_FAILURE_HEADER();                                         \
+        std::cout << TEST_PRINT_INDENT #actual " does not match " #expected \
+                  << std::endl;                                             \
+        std::cout << TEST_PRINT_INDENT "Actual: " << (actual) << std::endl; \
+        std::cout << TEST_PRINT_INDENT "Expected: " << (expected)           \
+                  << std::endl;                                             \
+        this->lastTestCasePassed = false;                                   \
+    }                                                                       \
 }
 
 #define ASSERT_THROW(command, error) {                                        \

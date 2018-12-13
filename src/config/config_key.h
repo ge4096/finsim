@@ -20,8 +20,8 @@ class ConfigKey {
 
 public:
 	ConfigKey(ConfigKeys::ConfigId id, ConfigType type,
-			  char const* fullKey, char const* commandLineKey,
-			  char const* description, char const* defaultValue) {
+	          char const* defaultValue, char const* fullKey,
+	          char const* commandLineKey, char const* description) {
 		this->id = id;
 		this->type = type;
 		this->fullKey = fullKey;

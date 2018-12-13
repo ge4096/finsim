@@ -19,7 +19,8 @@ public:
 	}
 	
 	void /* UnitTest:: */ setUp() override {
-		this->components.configKeyLookup = new ConfigKeyLookup(ArgumentLoaderTest::testKeys);
+		this->components.configKeyLookup =
+			new ConfigKeyLookup(ArgumentLoaderTest::testKeys);
 		this->mockConfigWriter = new MockConfigWriter();
 		this->components.configWriter = this->mockConfigWriter;
 	}
@@ -41,7 +42,8 @@ private:
 		ArgumentLoader argumentLoader(this->components, argc, argv);
 		auto const& loadedValues = this->mockConfigWriter->values;
 		ASSERT_EQUAL(loadedValues.size(), 1);
-		ASSERT_EQUAL(loadedValues.at(ConfigKeys::ConfigFilename), "program.cfg");
+		ASSERT_EQUAL(loadedValues.at(ConfigKeys::ConfigFilename),
+		             "program.cfg");
 	}
 	
 	void configFilenameSpecified() {
@@ -54,7 +56,8 @@ private:
 		ArgumentLoader argumentLoader(this->components, argc, argv);
 		auto const& loadedValues = this->mockConfigWriter->values;
 		ASSERT_EQUAL(loadedValues.size(), 1);
-		ASSERT_EQUAL(loadedValues.at(ConfigKeys::ConfigFilename), configFilename);
+		ASSERT_EQUAL(loadedValues.at(ConfigKeys::ConfigFilename),
+		             configFilename);
 	}
 	
 	void multipleArguments() {
@@ -66,7 +69,7 @@ private:
 		char const* argv[] = {programName, testKey1Flag, testKey1Value,
 		                                   testKey2Flag, testKey2Value};
 		constexpr int argc = sizeof(argv) / sizeof(char const*);
-
+		
 		ArgumentLoader argumentLoader(this->components, argc, argv);
 		auto const& loadedValues = this->mockConfigWriter->values;
 		ASSERT_EQUAL(loadedValues.size(), 3);
@@ -82,9 +85,12 @@ private:
 };
 
 ConfigKey const ArgumentLoaderTest::testKeys[] = {
-	// (id, type, full name, short name, description, default value)
-	ConfigKey(ConfigKeys::ConfigFilename, ConfigType::String, "ConfigFilename", "c", "The name of the configuration file", ""),
-	ConfigKey(ConfigKeys::TestKey1, ConfigType::Integer, "FullName1", "t", "Description", "1"),
-	ConfigKey(ConfigKeys::TestKey2, ConfigType::FloatingPoint, "FullName2", "test2", "Description", "2.0"),
+	// (id, type, default value, full name, short name, description)
+	ConfigKey(ConfigKeys::ConfigFilename, ConfigType::String, "",
+	          "ConfigFilename", "c", "The name of the configuration file"),
+	ConfigKey(ConfigKeys::TestKey1, ConfigType::Integer, "1",
+	          "FullName1", "t", "Description"),
+	ConfigKey(ConfigKeys::TestKey2, ConfigType::FloatingPoint, "2.0",
+	          "FullName2", "test2", "Description"),
 	ConfigKey(ConfigKeys::Null, ConfigType::Null, "", "", "", "")
 };

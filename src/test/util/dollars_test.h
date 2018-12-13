@@ -26,29 +26,22 @@ public:
 	}
 
 private:
-	void runComparisonExpectations(bool const* expectations, std::function<bool(Dollars const&, Dollars const&)> const& comparator) {
+	typedef std::function<bool(Dollars const&, Dollars const&)> Comparator;
+	
+	void runComparisonExpectations(bool const* expectations,
+	                               Comparator const& comparator) {
 		uint8_t expectationIndex = 0;
 		for(int8_t dollars = 1; dollars <= 3; ++dollars) {
 			for(int8_t cents = 1; cents <= 3; ++cents) {
-				if(expectations[expectationIndex] == true) {
-					ASSERT_TRUE(comparator(Dollars(dollars, cents), Dollars(2, 2)));
-				}
-				else {
-					ASSERT_FALSE(comparator(Dollars(dollars, cents), Dollars(2, 2)));
-				}
-				++expectationIndex;
-			}
-		}
-		
-		expectationIndex = 0;
-		for(int8_t dollars = -3; dollars <= -1; ++dollars) {
-			for(int8_t cents = -3; cents <= -1; ++cents) {
-				if(expectations[expectationIndex] == true) {
-					ASSERT_TRUE(comparator(Dollars(dollars, cents), Dollars(-2, -2)));
-				}
-				else {
-					ASSERT_FALSE(comparator(Dollars(dollars, cents), Dollars(-2, -2)));
-				}
+				bool positiveResult = comparator(Dollars(dollars, cents),
+				                                 Dollars(2, 2));
+				ASSERT_EQUAL(positiveResult, expectations[expectationIndex]);
+				
+				Dollars negativeDollars(dollars - 4, cents - 4);
+				bool negativeResult = comparator(negativeDollars,
+				                                 Dollars(-2, -2));
+				ASSERT_EQUAL(negativeResult, expectations[expectationIndex]);
+				
 				++expectationIndex;
 			}
 		}
@@ -59,7 +52,8 @@ private:
 		const bool expectations[] = {false, false, false,  // d1<d2
 		                             false, true,  false,  // d1=d2
 		                             false, false, false}; // d1>d2
-		this->runComparisonExpectations(expectations, std::equal_to<Dollars>());
+		this->runComparisonExpectations(expectations,
+		                                std::equal_to<Dollars>());
 	}
 	
 	void notEquals() {
@@ -67,7 +61,8 @@ private:
 		const bool expectations[] = {true,  true,  true,  // d1<d2
 		                             true,  false, true,  // d1=d2
 		                             true,  true,  true}; // d1>d2
-		this->runComparisonExpectations(expectations, std::not_equal_to<Dollars>());
+		this->runComparisonExpectations(expectations,
+		                                std::not_equal_to<Dollars>());
 	}
 	
 	void lessThan() {
@@ -75,7 +70,8 @@ private:
 		const bool expectations[] = {true,  true,  true,   // d1<d2
 		                             true,  false, false,  // d1=d2
 		                             false, false, false}; // d1>d2
-		this->runComparisonExpectations(expectations, std::less<Dollars>());
+		this->runComparisonExpectations(expectations,
+		                                std::less<Dollars>());
 	}
 	
 	void lessThanOrEqual() {
@@ -83,7 +79,8 @@ private:
 		const bool expectations[] = {true,  true,  true,   // d1<d2
 		                             true,  true,  false,  // d1=d2
 		                             false, false, false}; // d1>d2
-		this->runComparisonExpectations(expectations, std::less_equal<Dollars>());
+		this->runComparisonExpectations(expectations,
+		                                std::less_equal<Dollars>());
 	}
 	
 	void greaterThan() {
@@ -91,7 +88,8 @@ private:
 		const bool expectations[] = {false, false, false, // d1<d2
 		                             false, false, true,  // d1=d2
 		                             true,  true,  true}; // d1>d2
-		this->runComparisonExpectations(expectations, std::greater<Dollars>());
+		this->runComparisonExpectations(expectations,
+		                                std::greater<Dollars>());
 	}
 	
 	void greaterThanOrEqual() {
@@ -99,10 +97,12 @@ private:
 		const bool expectations[] = {false, false, false, // d1<d2
 		                             false, true,  true,  // d1=d2
 		                             true,  true,  true}; // d1>d2
-		this->runComparisonExpectations(expectations, std::greater_equal<Dollars>());
+		this->runComparisonExpectations(expectations,
+		                                std::greater_equal<Dollars>());
 	}
 	
-	void assertStringMatch(Dollars const& dollars, std::string const& expectedString) {
+	void assertStringMatch(Dollars const& dollars,
+	                       std::string const& expectedString) {
 		std::stringstream output;
 		dollars.printTo(output);
 		ASSERT_EQUAL(output.str(), expectedString);
@@ -114,7 +114,8 @@ private:
 		this->assertStringMatch(Dollars(0, -1), "($0.01)");
 		this->assertStringMatch(Dollars(1), "$1.00");
 		this->assertStringMatch(Dollars(-1), "($1.00)");
-		this->assertStringMatch(Dollars(1123012001000, 12), "$1,123,012,001,000.12");
+		this->assertStringMatch(Dollars(1123012001000, 12),
+		                        "$1,123,012,001,000.12");
 	}
 	
 	void fromString() {
@@ -131,7 +132,8 @@ private:
 		ASSERT_EQUAL(Dollars("$1"), Dollars(1));
 		ASSERT_EQUAL(Dollars("$1.00"), Dollars(1));
 		ASSERT_EQUAL(Dollars("$1.01"), Dollars(1, 1));
-		ASSERT_EQUAL(Dollars("$1,123,012,001,000.12"), Dollars(1123012001000, 12));
+		ASSERT_EQUAL(Dollars("$1,123,012,001,000.12"),
+		             Dollars(1123012001000, 12));
 		
 		ASSERT_EQUAL(Dollars("()"), Dollars());
 		ASSERT_EQUAL(Dollars("($0)"), Dollars());
@@ -143,7 +145,8 @@ private:
 		ASSERT_EQUAL(Dollars("($1)"), Dollars(-1));
 		ASSERT_EQUAL(Dollars("($1.00)"), Dollars(-1));
 		ASSERT_EQUAL(Dollars("($1.01)"), Dollars(-1, -1));
-		ASSERT_EQUAL(Dollars("($1,123,012,001,000.12)"), Dollars(-1123012001000, -12));
+		ASSERT_EQUAL(Dollars("($1,123,012,001,000.12)"),
+		             Dollars(-1123012001000, -12));
 	}
 	
 	void testAdd(Dollars d1, Dollars d2, Dollars expected) {
@@ -153,15 +156,11 @@ private:
 	}
 	
 	void add() {
-		this->testAdd(Dollars(),   Dollars(),   Dollars());
-		this->testAdd(Dollars(1),  Dollars(),   Dollars(1));
-		this->testAdd(Dollars(),   Dollars(1),  Dollars(1));
-		this->testAdd(Dollars(1),  Dollars(1),  Dollars(2));
-		this->testAdd(Dollars(-1), Dollars(),   Dollars(-1));
-		this->testAdd(Dollars(),   Dollars(-1), Dollars(-1));
-		this->testAdd(Dollars(-1), Dollars(-1), Dollars(-2));
-		this->testAdd(Dollars(1),  Dollars(-1), Dollars());
-		this->testAdd(Dollars(-1), Dollars(1),  Dollars());
+		for(int8_t a = -1; a <= 1; ++a) {
+			for(int8_t b = -1; b <= 1; ++b) {
+				this->testAdd(Dollars(a), Dollars(b), Dollars(a + b));
+			}
+		}
 		
 		this->testAdd(Dollars(0, 1),  Dollars(1),    Dollars(1, 1));
 		this->testAdd(Dollars(1, 1),  Dollars(2, 2), Dollars(3, 3));
@@ -175,15 +174,11 @@ private:
 	}
 	
 	void subtract() {
-		this->testSubtract(Dollars(),   Dollars(),   Dollars());
-		this->testSubtract(Dollars(1),  Dollars(),   Dollars(1));
-		this->testSubtract(Dollars(),   Dollars(1),  Dollars(-1));
-		this->testSubtract(Dollars(1),  Dollars(1),  Dollars());
-		this->testSubtract(Dollars(-1), Dollars(),   Dollars(-1));
-		this->testSubtract(Dollars(),   Dollars(-1), Dollars(1));
-		this->testSubtract(Dollars(-1), Dollars(-1), Dollars());
-		this->testSubtract(Dollars(1),  Dollars(-1), Dollars(2));
-		this->testSubtract(Dollars(-1), Dollars(1),  Dollars(-2));
+		for(int8_t a = -1; a <= 1; ++a) {
+			for(int8_t b = -1; b <= 1; ++b) {
+				this->testSubtract(Dollars(a), Dollars(b), Dollars(a - b));
+			}
+		}
 		
 		this->testSubtract(Dollars(1, 1), Dollars(1),    Dollars(0, 1));
 		this->testSubtract(Dollars(1, 1), Dollars(0, 1), Dollars(1));
@@ -204,6 +199,7 @@ private:
 		this->testMultiply(Dollars(10),     1,   Dollars(10));
 		this->testMultiply(Dollars(10),     2,   Dollars(20));
 		this->testMultiply(Dollars(12, 34), 2,   Dollars(24, 68));
+		this->testMultiply(Dollars(12, 34), 4,   Dollars(49, 36));
 		this->testMultiply(Dollars(12, 34), 100, Dollars(1234));
 		
 		this->testMultiply(Dollars(12, 34),   -1, Dollars(-12, -34));

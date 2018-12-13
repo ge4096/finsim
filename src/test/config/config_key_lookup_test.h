@@ -29,7 +29,8 @@ private:
 	void findByShortName() {
 		ConfigKeyLookup lookup(ConfigKeyLookupTest::testKeys);
 		ConfigKey const& testKey = ConfigKeyLookupTest::testKeys[1];
-		ConfigKey const& foundKey = lookup.getByShortName(testKey.commandLineKey);
+		ConfigKey const& foundKey =
+			lookup.getByShortName(testKey.commandLineKey);
 		assertKeysMatch(foundKey, testKey);
 	}
 	
@@ -52,16 +53,22 @@ private:
 	
 	void findMissingKey() {
 		ConfigKeyLookup lookup(ConfigKeyLookupTest::testKeys);
-		ASSERT_THROW((void)lookup.getByFullName("MissingKey"), ConfigKeyLookup::KeyNotFoundError);
-		ASSERT_THROW((void)lookup.getByShortName("m"), ConfigKeyLookup::KeyNotFoundError);
-		ASSERT_THROW((void)lookup.getByShortName(""), ConfigKeyLookup::KeyNotFoundError);
-		ASSERT_THROW((void)lookup.getById(ConfigKeys::ShowHelp), ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByFullName("MissingKey"),
+		             ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByShortName("m"),
+		             ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByShortName(""),
+		             ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getById(ConfigKeys::ShowHelp),
+		             ConfigKeyLookup::KeyNotFoundError);
 	}
 	
 	void sentinelNotRegistered() {
 		ConfigKeyLookup lookup(ConfigKeyLookupTest::testKeys);
-		ASSERT_THROW((void)lookup.getByFullName(""), ConfigKeyLookup::KeyNotFoundError);
-		ASSERT_THROW((void)lookup.getByShortName(""), ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByFullName(""),
+		             ConfigKeyLookup::KeyNotFoundError);
+		ASSERT_THROW((void)lookup.getByShortName(""),
+		             ConfigKeyLookup::KeyNotFoundError);
 	}
 	
 	static ConfigKey const testKeys[];
@@ -69,8 +76,10 @@ private:
 };
 
 ConfigKey const ConfigKeyLookupTest::testKeys[] = {
-	// (id, type, full name, short name, description, default value)
-	ConfigKey(ConfigKeys::TestKey1, ConfigType::Integer, "FullName1", "", "Description", "1"),
-	ConfigKey(ConfigKeys::TestKey2, ConfigType::FloatingPoint, "FullName2", "f", "Description", "2.0"),
+	// (id, type, default value, full name, short name, description)
+	ConfigKey(ConfigKeys::TestKey1, ConfigType::Integer, "1",
+	          "FullName1", "", "Description"),
+	ConfigKey(ConfigKeys::TestKey2, ConfigType::FloatingPoint, "2.0",
+	          "FullName2", "f", "Description"),
 	ConfigKey(ConfigKeys::Null, ConfigType::Null, "", "", "", "")
 };

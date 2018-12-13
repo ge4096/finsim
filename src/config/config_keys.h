@@ -12,9 +12,11 @@ namespace ConfigKeys {
 	};
 
 	static ConfigKey const keys[] = {
-		// (id, type, full name, short name, description, default value)
-		ConfigKey(ConfigFilename, ConfigType::String, "ConfigFilename", "c", "The name of the configuration file", ""),
-		ConfigKey(ShowHelp, ConfigType::Boolean, "ShowHelp", "h", "Shows help", "false"),\
+		// (id, type, default value, full name, short name, description)
+		ConfigKey(ConfigFilename, ConfigType::String, "",
+		          "ConfigFilename", "c", "The name of the configuration file"),
+		ConfigKey(ShowHelp, ConfigType::Boolean, "false",
+		          "ShowHelp", "h", "Shows help"),
 		ConfigKey(Null, ConfigType::Null, "", "", "", "")
 	};
 }

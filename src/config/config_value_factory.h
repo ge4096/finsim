@@ -8,18 +8,15 @@
 
 bool charToBool(char firstLetter) {
 	switch(firstLetter) {
-		case 't':
-		case 'T':
-		case 'y':
-		case 'Y':
-			return true;
-		case 'f':
-		case 'F':
-		case 'n':
-		case 'N':
-			return false;
-		default:
-			throw std::runtime_error("Unrecognized boolean value");
+		case 't': return true;
+		case 'T': return true;
+		case 'y': return true;
+		case 'Y': return true;
+		case 'f': return false;
+		case 'F': return false;
+		case 'n': return false;
+		case 'N': return false;
+		default: throw std::runtime_error("Unrecognized boolean value");
 	}
 }
 
@@ -44,8 +41,7 @@ public:
 				return this->parseBoolean(stringValue);
 			case ConfigType::String:
 				return this->parseString(stringValue);
-			default:
-				throw std::runtime_error("Invalid type");
+			default: throw std::runtime_error("Invalid type");
 		}
 	}
 
@@ -96,16 +92,16 @@ private:
 	}
 	
 	void deleteAllParsedValues() {
-		deleteParsedValues(this->parsedIntegers);
-		deleteParsedValues(this->parsedUnsignedIntegers);
-		deleteParsedValues(this->parsedFloatingPoints);
-		deleteParsedValues(this->parsedBooleans);
-		deleteParsedValues(this->parsedStrings);
+		this->deleteValues(this->parsedIntegers);
+		this->deleteValues(this->parsedUnsignedIntegers);
+		this->deleteValues(this->parsedFloatingPoints);
+		this->deleteValues(this->parsedBooleans);
+		this->deleteValues(this->parsedStrings);
 	}
 	
-	template<typename T> void deleteParsedValues(std::vector<T const*> const& parsedValues) {
-		for(auto& parsedValue: parsedValues) {
-			delete parsedValue;
+	template<typename T> void deleteValues(std::vector<T const*> const& values) {
+		for(auto& value: values) {
+			delete value;
 		}
 	}
 	

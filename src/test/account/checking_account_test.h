@@ -41,7 +41,8 @@ private:
 		Dollars const negativeBalance = Dollars(-12, -34);
 		std::string const accountName = "My Negative Account";
 		
-		ASSERT_THROW(CheckingAccount account(negativeBalance, accountName), Account::Overdraw);
+		ASSERT_THROW(CheckingAccount account(negativeBalance, accountName),
+		              Account::Overdraw);
 	}
 	
 	void deposit() {
@@ -89,7 +90,8 @@ private:
 		ASSERT_EQUAL(account1.getValue(), Dollars());
 		ASSERT_EQUAL(account2.getValue(), 2 * startingBalance);
 		
-		ASSERT_THROW(account1.transferTo(&account2, transferAmount), Account::Overdraw);
+		ASSERT_THROW(account1.transferTo(&account2, transferAmount),
+		             Account::Overdraw);
 	}
 
 };

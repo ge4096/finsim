@@ -38,15 +38,15 @@ private:
 	}
 	
 	void parseUnsignedIntegers() {
-		ASSERT_EQUAL(getUnsignedIntegerValue("0"), 0);
-		ASSERT_EQUAL(getUnsignedIntegerValue("1"), 1);
-		ASSERT_THROW(getUnsignedIntegerValue("-1"), std::runtime_error);
-		ASSERT_EQUAL(getUnsignedIntegerValue("2147483647"),
-		                                      2147483647);
-		ASSERT_THROW(getUnsignedIntegerValue("-2147483648"), std::runtime_error);
-		ASSERT_EQUAL(getUnsignedIntegerValue("4294967295"),
-		                                      4294967295);
-		ASSERT_THROW(getUnsignedIntegerValue("-4294967296"), std::runtime_error);
+		ASSERT_EQUAL(getUnsignedIntValue("0"), 0);
+		ASSERT_EQUAL(getUnsignedIntValue("1"), 1);
+		ASSERT_THROW(getUnsignedIntValue("-1"), std::runtime_error);
+		ASSERT_EQUAL(getUnsignedIntValue("2147483647"),
+		                                  2147483647);
+		ASSERT_THROW(getUnsignedIntValue("-2147483648"), std::runtime_error);
+		ASSERT_EQUAL(getUnsignedIntValue("4294967295"),
+		                                  4294967295);
+		ASSERT_THROW(getUnsignedIntValue("-4294967296"), std::runtime_error);
 	}
 	
 	void parseFloatingPoints() {
@@ -73,27 +73,34 @@ private:
 	}
 	
 	int const& getIntegerValue(std::string const& stringValue) {
-		return this->getParsedValue<int>(stringValue, ConfigType::Integer);
+		return this->getValue<int>(stringValue,
+		                           ConfigType::Integer);
 	}
 	
-	unsigned int const& getUnsignedIntegerValue(std::string const& stringValue) {
-		return this->getParsedValue<unsigned int>(stringValue, ConfigType::UnsignedInteger);
+	unsigned int const& getUnsignedIntValue(std::string const& stringValue) {
+		return this->getValue<unsigned int>(stringValue,
+		                                    ConfigType::UnsignedInteger);
 	}
 	
 	double const& getFloatingPointValue(std::string const& stringValue) {
-		return this->getParsedValue<double>(stringValue, ConfigType::FloatingPoint);
+		return this->getValue<double>(stringValue,
+		                              ConfigType::FloatingPoint);
 	}
 	
 	bool const& getBooleanValue(std::string const& stringValue) {
-		return this->getParsedValue<bool>(stringValue, ConfigType::Boolean);
+		return this->getValue<bool>(stringValue,
+		                            ConfigType::Boolean);
 	}
 	
 	std::string const& getStringValue(std::string const& stringValue) {
-		return this->getParsedValue<std::string>(stringValue, ConfigType::String);
+		return this->getValue<std::string>(stringValue,
+		                                   ConfigType::String);
 	}
 	
-	template<typename T> T const& getParsedValue(std::string const& stringValue, ConfigType type) {
-		void const* parsedValue = this->valueFactory.parseValue(stringValue, type);
+	template<typename T> T const& getValue(std::string const& stringValue,
+	                                       ConfigType type) {
+		void const* parsedValue = this->valueFactory.parseValue(stringValue,
+		                                                        type);
 		return *(static_cast<T const*>(parsedValue));
 	}
 	

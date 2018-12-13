@@ -36,7 +36,8 @@ public:
 	                                     std::string const& value) override {
 		auto matchingItem = this->configurationData.find(key.id);
 		if(matchingItem == this->configurationData.end()) {
-			void const* parsedValue = this->valueFactory->parseValue(value, key.type);
+			void const* parsedValue = this->valueFactory->parseValue(value,
+			                                                         key.type);
 			this->configurationData[key.id] = parsedValue;
 		}
 	}
@@ -49,7 +50,7 @@ private:
 			return *(static_cast<T const*>(this->configurationData.at(id)));
 		}
 		else {
-			throw std::runtime_error("Configuration value is not of specified type");
+			throw std::runtime_error("Configuration value type mismatch");
 		}
 	}
 	
@@ -60,22 +61,27 @@ private:
 
 };
 
-template<> int const& Configuration::getValue(ConfigKeys::ConfigId id) const {
-	return this->checkTypeAndGetValue<int>(id, ConfigType::Integer);
+int const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+	ConfigType constexpr type = ConfigType::Integer;
+	return this->checkTypeAndGetValue<int>(id, type);
 }
 
-template<> unsigned int const& Configuration::getValue(ConfigKeys::ConfigId id) const {
-	return this->checkTypeAndGetValue<unsigned int>(id, ConfigType::UnsignedInteger);
+unsigned int const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+	ConfigType constexpr type = ConfigType::UnsignedInteger;
+	return this->checkTypeAndGetValue<unsigned int>(id, type);
 }
 
-template<> double const& Configuration::getValue(ConfigKeys::ConfigId id) const {
-	return this->checkTypeAndGetValue<double>(id, ConfigType::FloatingPoint);
+double const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+	ConfigType constexpr type = ConfigType::FloatingPoint;
+	return this->checkTypeAndGetValue<double>(id, type);
 }
 
-template<> bool const& Configuration::getValue(ConfigKeys::ConfigId id) const {
-	return this->checkTypeAndGetValue<bool>(id, ConfigType::Boolean);
+bool const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+	ConfigType constexpr type = ConfigType::Boolean;
+	return this->checkTypeAndGetValue<bool>(id, type);
 }
 
-template<> std::string const& Configuration::getValue(ConfigKeys::ConfigId id) const {
-	return this->checkTypeAndGetValue<std::string>(id, ConfigType::String);
+std::string const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+	ConfigType constexpr type = ConfigType::String;
+	return this->checkTypeAndGetValue<std::string>(id, type);
 }

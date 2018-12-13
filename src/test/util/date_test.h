@@ -33,7 +33,9 @@ private:
 		ASSERT_THROW(Date(1970, 13, 1), std::out_of_range);
 	}
 	
-	void testComparisons(Date const& day1, Date const& day2, Date const& day3) {
+	void testComparisons(Date const& day1,
+	                     Date const& day2,
+	                     Date const& day3) {
 		ASSERT_TRUE(day1 == day1);
 		ASSERT_FALSE(day1 == day2);
 		
@@ -81,7 +83,8 @@ private:
 		this->testComparisons(day1, day2, day3);
 	}
 	
-	void assertStringMatch(Date const& date, std::string const& expectedString) {
+	void assertStringMatch(Date const& date,
+	                       std::string const& expectedString) {
 		std::stringstream output;
 		date.printTo(output);
 		ASSERT_EQUAL(output.str(), expectedString);

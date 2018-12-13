@@ -77,7 +77,7 @@ private:
 		if(this->arguments.empty()) {
 			return false;
 		}
-		else if(this->arguments.back().name.empty()){
+		else if(this->arguments.back().name.empty()) {
 			return false;
 		}
 		else {

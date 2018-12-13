@@ -31,7 +31,8 @@ private:
 	}
 	
 	void loadArgument(CommandLineArgument const& argument) {
-		ConfigKey const& matchingKey = this->keyLookup->getByShortName(argument.name);
+		std::string const& name = argument.name;
+		ConfigKey const& matchingKey = this->keyLookup->getByShortName(name);
 		if(argument.value.empty()) {
 			this->configWriter->writeValue(matchingKey, "true");
 		}
@@ -45,9 +46,12 @@ private:
 	}
 	
 	void setDefaultConfigFilename() {
-		ConfigKey const& configFilenameKey = this->keyLookup->getById(ConfigKeys::ConfigFilename);
-		std::string defaultConfigFilename = this->arguments->getProgramName() + ".cfg";
-		this->configWriter->writeValue(configFilenameKey, defaultConfigFilename);
+		ConfigKey const& configFilenameKey =
+			this->keyLookup->getById(ConfigKeys::ConfigFilename);
+		std::string defaultConfigFilename = this->arguments->getProgramName();
+		defaultConfigFilename += ".cfg";
+		this->configWriter->writeValue(configFilenameKey,
+		                               defaultConfigFilename);
 		this->setConfigFilename = true;
 	}
 	
