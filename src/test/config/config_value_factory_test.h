@@ -50,7 +50,29 @@ private:
 	}
 	
 	void parseFloatingPoints() {
-		ASSERT_EQUAL(getFloatingPointValue("0.0"), 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("0"),     0.0, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("0.0"),   0.0, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("1"),     1.0, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("1.0"),   1.0, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("-1"),   -1.0, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("-1.0"), -1.0, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("1.5"),   1.5, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("-1.5"), -1.5, 0.0);
+		
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("2e9"),      2.0e9,  0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("2.0e9"),    2.0e9,  0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("-2e9"),    -2.0e9,  0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("-2.0e9"),  -2.0e9,  0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("2e-9"),     2.0e-9, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("2.0e-9"),   2.0e-9, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("-2e-9"),   -2.0e-9, 0.0);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("-2.0e-9"), -2.0e-9, 0.0);
+		
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("1.234567890"),
+		                                          1.23456789,
+		                                          0.000000001);
+		ASSERT_FLOAT_EQUAL(getFloatingPointValue("12345678901234567890"),
+		                                          12345678901234567890.0, 0.1);
 	}
 	
 	void parseBooleans() {

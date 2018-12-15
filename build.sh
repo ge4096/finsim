@@ -1,7 +1,7 @@
 #!/bin/bash
 
 COMPILER="g++"
-COMPILER_FLAGS="-std=c++11 -iquotesrc -Wall -Wextra"
+COMPILER_FLAGS="-std=c++11 -iquotesrc -Wall -Wextra -Wfloat-equal -Wpointer-arith -Wcast-qual -Wunreachable-code"
 DEBUG_FLAGS="-g -O0"
 OPTIMIZE_FLAGS="-O3"
 TARGET="finsim"
@@ -49,6 +49,8 @@ fi
 
 START_TIME=$(date -u +%s)
 echo "Starting ${BUILD_TYPE} build"
+
+./style.py
 
 MAIN_TARGET="${TARGET_BASE_FOLDER}${TARGET_SUBFOLDER}${TARGET}"
 if [ "${BUILD_MAIN}" = true ]; then
