@@ -61,27 +61,32 @@ private:
 
 };
 
-template<> int const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+template<> int const&
+Configuration::getValue(ConfigKeys::ConfigId id) const {
 	ConfigType constexpr type = ConfigType::Integer;
 	return this->checkTypeAndGetValue<int>(id, type);
 }
 
-template<> unsigned int const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+template<> unsigned int const&
+Configuration::getValue(ConfigKeys::ConfigId id) const {
 	ConfigType constexpr type = ConfigType::UnsignedInteger;
 	return this->checkTypeAndGetValue<unsigned int>(id, type);
 }
 
-template<> double const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+template<> double const&
+Configuration::getValue(ConfigKeys::ConfigId id) const {
 	ConfigType constexpr type = ConfigType::FloatingPoint;
 	return this->checkTypeAndGetValue<double>(id, type);
 }
 
-template<> bool const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+template<> bool const&
+Configuration::getValue(ConfigKeys::ConfigId id) const {
 	ConfigType constexpr type = ConfigType::Boolean;
 	return this->checkTypeAndGetValue<bool>(id, type);
 }
 
-template<> std::string const& Configuration::getValue(ConfigKeys::ConfigId id) const {
+template<> std::string const&
+Configuration::getValue(ConfigKeys::ConfigId id) const {
 	ConfigType constexpr type = ConfigType::String;
 	return this->checkTypeAndGetValue<std::string>(id, type);
 }

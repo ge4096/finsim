@@ -99,7 +99,8 @@ private:
 		this->deleteValues(this->parsedStrings);
 	}
 	
-	template<typename T> void deleteValues(std::vector<T const*> const& values) {
+	template<typename T> void
+	deleteValues(std::vector<T const*> const& values) {
 		for(auto& value: values) {
 			delete value;
 		}

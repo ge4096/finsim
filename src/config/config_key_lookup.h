@@ -40,7 +40,8 @@ public:
 	}
 
 private:
-	template<typename T> using KeyMap = std::unordered_map<T, ConfigKey const*>;
+	template<typename T> using KeyMap =
+		std::unordered_map<T, ConfigKey const*>;
 	
 	void loadKeys() {
 		ConfigKey const* currentKey = keys;
@@ -55,8 +56,8 @@ private:
 		}
 	}
 	
-	template<typename T> ConfigKey const* getMatch(T const& identifier,
-	                                               KeyMap<T> const& keyMap) const {
+	template<typename T> ConfigKey const*
+	getMatch(T const& identifier, KeyMap<T> const& keyMap) const {
 		auto key = keyMap.find(identifier);
 		if(key == keyMap.end()) {
 			throw KeyNotFoundError();
