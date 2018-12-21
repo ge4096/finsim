@@ -1,7 +1,8 @@
 #!/bin/bash
 
 COMPILER="g++"
-COMPILER_FLAGS="-std=c++11 -iquotesrc -Wall -Wextra -Wfloat-equal -Wpointer-arith -Wcast-qual -Wunreachable-code"
+COMPILER_FLAGS="-std=c++11 -iquotesrc -Wall -Wextra \
+	-Wfloat-equal -Wpointer-arith -Wcast-qual -Wunreachable-code"
 DEBUG_FLAGS="-g -O0"
 OPTIMIZE_FLAGS="-O3"
 TARGET="finsim"
@@ -50,12 +51,14 @@ fi
 START_TIME=$(date -u +%s)
 echo "Starting ${BUILD_TYPE} build"
 
-./style.py
+find . -type f -not -path '*/\.*' | ./style.py
+
+COMPILE_COMMAND="${COMPILER} ${COMPILER_FLAGS} ${EXTRA_FLAGS}"
 
 MAIN_TARGET="${TARGET_BASE_FOLDER}${TARGET_SUBFOLDER}${TARGET}"
 if [ "${BUILD_MAIN}" = true ]; then
 	mkdir -p $(dirname ${MAIN_TARGET})
-	${COMPILER} ${COMPILER_FLAGS} ${EXTRA_FLAGS} ./src/main.cpp -o ${MAIN_TARGET}
+	${COMPILE_COMMAND} ./src/main.cpp -o ${MAIN_TARGET}
 	if [ $? -ne 0 ]; then
 		exit $?
 	fi
@@ -64,7 +67,7 @@ fi
 TEST_TARGET="${TARGET_BASE_FOLDER}${TARGET_SUBFOLDER}${TARGET}_test"
 if [ "${BUILD_TEST}" = true ]; then
 	mkdir -p $(dirname ${TEST_TARGET})
-	${COMPILER} ${COMPILER_FLAGS} ${EXTRA_FLAGS} ./src/test/main.cpp -o ${TEST_TARGET}
+	${COMPILE_COMMAND} ./src/test/main.cpp -o ${TEST_TARGET}
 	if [ $? -ne 0 ]; then
 		exit $?
 	fi
