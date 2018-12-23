@@ -21,6 +21,8 @@ if [ "${BUILD_TYPE}" = "debug" ]; then
 	BUILD_MAIN=true
 	EXTRA_FLAGS="${DEBUG_FLAGS}"
 	TARGET_SUBFOLDER="debug/"
+elif [ "${BUILD_TYPE}" = "style" ]; then
+	: # Don't build anything, just run the style check
 elif [ "${BUILD_TYPE}" = "test" ]; then
 	BUILD_TEST=true
 	RUN_TEST=true
@@ -44,7 +46,7 @@ elif [ "${BUILD_TYPE}" = "clean" ]; then
 	rm -rf ${TARGET_BASE_FOLDER}
 	exit 0
 else
-	echo "Usage: ${0} [debug|test|coverage|profile|release|clean]"
+	echo "Usage: ${0} [debug|style|test|coverage|profile|release|clean]"
 	exit 1
 fi
 

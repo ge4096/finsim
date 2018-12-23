@@ -1,6 +1,7 @@
 #!/bin/python3
 
 import sys
+import re
 
 class StyleValidation():
 	def __init__(self, filename):
@@ -8,25 +9,31 @@ class StyleValidation():
 		self._filename = filename
 		self._line_number = 0
 		
-		if (filename.endswith('.h') or filename.endswith('.cpp') or
-		    filename.endswith('.sh')):
-			validators = [LengthValidator(), IndentationValidator(False),
-			              WhitespaceValidator()]
-		elif filename.endswith('.py'):
-			validators = [LengthValidator(), IndentationValidator(True),
-			              WhitespaceValidator()]
+		extension = filename.split('.')[-1]
+		self._set_validators(extension)
+		self._validate_file()
+	
+	def _set_validators(self, extension):
+		if extension in ['h', 'cpp']:
+			self._validators = [LengthValidator(), IndentationValidator(False),
+			                    WhitespaceValidator(), CppSequenceValidator()]
+		elif extension == 'sh':
+			self._validators = [LengthValidator(), IndentationValidator(False),
+			                    WhitespaceValidator()]
+		elif extension == 'py':
+			self._validators = [LengthValidator(), IndentationValidator(True),
+			                    WhitespaceValidator()]
 		else:
-			validators = []
-		self._validate_file(validators)
-
-	def _validate_file(self, validators):
-		if len(validators) == 0:
+			self._validators = []
+	
+	def _validate_file(self):
+		if len(self._validators) == 0:
 			return
 		
-		with open(self._filename, 'r') as f:
+		with open(self._filename, 'r', newline = '') as f:
 			for line in f:
 				self._line_number += 1
-				for validator in validators:
+				for validator in self._validators:
 					warnings = validator.validate(line)
 					for warning in warnings:
 						self._add_style_warning(warning)
@@ -96,6 +103,23 @@ class WhitespaceValidator():
 			warnings.append('Trailing space')
 		if line[-1] != '\n':
 			warnings.append('No trailing newline')
+		if '\t' in line.strip():
+			warnings.append('Indentation after start of line')
+		
+		return warnings
+
+class CppSequenceValidator():
+	def __init__(self):
+		self._parenthesis_spacing_pattern = re.compile(r'\w \(')
+	
+	def validate(self, line):
+		warnings = []
+		
+		if '){' in line:
+			warnings.append('Inconsistent brace spacing')
+		if (self._parenthesis_spacing_pattern.search(line) and
+		    'return' not in line):
+			warnings.append('Inconsistent parenthesis spacing')
 		
 		return warnings
 
