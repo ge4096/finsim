@@ -1,8 +1,22 @@
 #pragma once
 
+#include "util/date.h"
 #include "util/dollars.h"
 #include <stdexcept>
 #include <string>
+
+class AccountUpdate {
+
+public:
+	AccountUpdate(Date const& date) {
+		this->currentDate = date;
+	}
+	
+	Date currentDate;
+	double dailyMarketChange;
+	double annualInflation;
+
+};
 
 class Account {
 
@@ -31,6 +45,8 @@ public:
 	virtual void withdraw(Dollars const& debit) = 0;
 	
 	virtual Dollars getValue() const = 0;
+	
+	virtual void dailyUpdate(AccountUpdate const& update) = 0;
 	
 	void transferTo(Account* account, Dollars const& amount) {
 		if(amount < Dollars()) {

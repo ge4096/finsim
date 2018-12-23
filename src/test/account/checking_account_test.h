@@ -14,6 +14,7 @@ public:
 		RUN_TEST_CASE(initializeNegative);
 		RUN_TEST_CASE(deposit);
 		RUN_TEST_CASE(withdraw);
+		RUN_TEST_CASE(dailyUpdate);
 		RUN_TEST_CASE(transfer);
 		END_TEST(CheckingAccountTest);
 	}
@@ -23,7 +24,7 @@ private:
 		Dollars const zeroBalance = Dollars();
 		std::string const accountName = "My Account";
 		
-		CheckingAccount account(zeroBalance, accountName);
+		CheckingAccount account(accountName, zeroBalance);
 		ASSERT_EQUAL(account.getValue(), zeroBalance);
 		ASSERT_EQUAL(account.getName(), accountName);
 	}
@@ -32,7 +33,7 @@ private:
 		Dollars const positiveBalance = Dollars(12, 34);
 		std::string const accountName = "My Positive Account";
 		
-		CheckingAccount account(positiveBalance, accountName);
+		CheckingAccount account(accountName, positiveBalance);
 		ASSERT_EQUAL(account.getValue(), positiveBalance);
 		ASSERT_EQUAL(account.getName(), accountName);
 	}
@@ -41,7 +42,7 @@ private:
 		Dollars const negativeBalance = Dollars(-12, -34);
 		std::string const accountName = "My Negative Account";
 		
-		ASSERT_THROW(CheckingAccount account(negativeBalance, accountName),
+		ASSERT_THROW(CheckingAccount account(accountName, negativeBalance),
 		              Account::Overdraw);
 	}
 	
@@ -49,7 +50,7 @@ private:
 		Dollars const startingBalance = Dollars(12, 34);
 		Dollars const depositAmount = Dollars(1, 23);
 		
-		CheckingAccount account(startingBalance, "My Account");
+		CheckingAccount account("My Account", startingBalance);
 		account.deposit(Dollars());
 		ASSERT_EQUAL(account.getValue(), startingBalance);
 		account.deposit(depositAmount);
@@ -62,7 +63,7 @@ private:
 		Dollars const startingBalance = Dollars(12, 34);
 		Dollars const withdrawAmount = Dollars(1, 23);
 		
-		CheckingAccount account(startingBalance, "My Account");
+		CheckingAccount account("My Account", startingBalance);
 		account.withdraw(Dollars());
 		ASSERT_EQUAL(account.getValue(), startingBalance);
 		account.withdraw(withdrawAmount);
@@ -72,11 +73,22 @@ private:
 		ASSERT_THROW(account.withdraw(startingBalance), Account::Overdraw);
 	}
 	
+	void dailyUpdate() {
+		Dollars const startingBalance = Dollars(1234567, 89);
+		AccountUpdate update(Date(2008, 10, 13));
+		update.dailyMarketChange = 111.58;
+		update.annualInflation = 0.9964;
+		
+		CheckingAccount account("My Account", startingBalance);
+		account.dailyUpdate(update);
+		ASSERT_EQUAL(account.getValue(), startingBalance);
+	}
+	
 	void transfer() {
 		Dollars const startingBalance = Dollars(12, 34);
 		Dollars const transferAmount = Dollars(1, 23);
-		CheckingAccount account1(startingBalance, "Account 1");
-		CheckingAccount account2(startingBalance, "Account 2");
+		CheckingAccount account1("Account 1", startingBalance);
+		CheckingAccount account2("Account 2", startingBalance);
 		
 		account1.transferTo(&account2, transferAmount);
 		ASSERT_EQUAL(account1.getValue(), startingBalance - transferAmount);

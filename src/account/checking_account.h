@@ -5,8 +5,8 @@
 class CheckingAccount: public Account {
 
 public:
-	CheckingAccount(Dollars const& balance,
-	                std::string const& name): Account(name) {
+	CheckingAccount(std::string const& name,
+	                Dollars const& balance): Account(name) {
 		if(balance < 0) {
 			throw Account::Overdraw();
 		}
@@ -26,6 +26,10 @@ public:
 	
 	Dollars getValue() const override {
 		return this->balance;
+	}
+	
+	void dailyUpdate(AccountUpdate const& update) override {
+		static_cast<void>(update);
 	}
 
 private:

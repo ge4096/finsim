@@ -8,6 +8,8 @@
 class Date {
 
 public:
+	Date(): Date(1970, 1, 1) {}
+	
 	Date(uint16_t year, uint8_t month, uint8_t dayOfMonth) {
 		this->setYear(year);
 		this->setMonth(month);
