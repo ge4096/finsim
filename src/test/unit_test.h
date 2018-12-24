@@ -53,10 +53,34 @@
 }
 
 #define ASSERT_EQUAL(actual, expected) {                                    \
-    if((actual) != (expected)) {                                            \
+    if(!((actual) == (expected))) {                                         \
         ASSERTION_FAILURE_HEADER();                                         \
         std::cout << TEST_PRINT_INDENT #actual " does not match " #expected \
                   << std::endl;                                             \
+        std::cout << TEST_PRINT_INDENT "Actual: " << (actual) << std::endl; \
+        std::cout << TEST_PRINT_INDENT "Expected: " << (expected)           \
+                  << std::endl;                                             \
+        this->lastTestCasePassed = false;                                   \
+    }                                                                       \
+}
+
+#define ASSERT_LESS(actual, expected) {                                     \
+    if(!((actual) < (expected))) {                                          \
+        ASSERTION_FAILURE_HEADER();                                         \
+        std::cout << TEST_PRINT_INDENT #actual " is not less than "         \
+                  << #expected << std::endl;                                \
+        std::cout << TEST_PRINT_INDENT "Actual: " << (actual) << std::endl; \
+        std::cout << TEST_PRINT_INDENT "Expected: " << (expected)           \
+                  << std::endl;                                             \
+        this->lastTestCasePassed = false;                                   \
+    }                                                                       \
+}
+
+#define ASSERT_GREATER(actual, expected) {                                  \
+    if(!((actual) > (expected))) {                                          \
+        ASSERTION_FAILURE_HEADER();                                         \
+        std::cout << TEST_PRINT_INDENT #actual " is not greater than "      \
+                  << #expected << std::endl;                                \
         std::cout << TEST_PRINT_INDENT "Actual: " << (actual) << std::endl; \
         std::cout << TEST_PRINT_INDENT "Expected: " << (expected)           \
                   << std::endl;                                             \

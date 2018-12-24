@@ -1,6 +1,7 @@
 #pragma once
 
 #include "test/unit_test.h"
+#include "test/unit_test_test.h"
 #include "test/util/date_test.h"
 #include "test/util/dollars_comparisons_test.h"
 #include "test/util/dollars_operations_test.h"
@@ -16,7 +17,8 @@ class UnitTests {
 
 public:
 	UnitTests() {
-		this->tests = {new DateTest(),
+		this->tests = {new UnitTestTest(),
+		               new DateTest(),
 		               new DollarsComparisonsTest(),
 		               new DollarsOperationsTest(),
 		               new CommandLineArgumentsTest(),
