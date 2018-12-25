@@ -18,6 +18,7 @@ public:
 		RUN_TEST_CASE(dayOfWeek);
 		RUN_TEST_CASE(lastDayOfMonth);
 		RUN_TEST_CASE(lastDayOfYear);
+		RUN_TEST_CASE(daysInMonth);
 		RUN_TEST_CASE(incrementOne);
 		RUN_TEST_CASE(incrementMany);
 		END_TEST(DateTest);
@@ -116,6 +117,12 @@ private:
 		ASSERT_FALSE(Date(1970, 1, 31).isLastDayOfYear());
 		ASSERT_FALSE(Date(1970, 12, 30).isLastDayOfYear());
 		ASSERT_TRUE(Date(1970, 12, 31).isLastDayOfYear());
+	}
+	
+	void daysInMonth() {
+		ASSERT_EQUAL(Date(1970, 1, 1).getDaysInMonth(), 31);
+		ASSERT_EQUAL(Date(1970, 2, 1).getDaysInMonth(), 28);
+		ASSERT_EQUAL(Date(1972, 2, 1).getDaysInMonth(), 29);
 	}
 	
 	void incrementOne() {

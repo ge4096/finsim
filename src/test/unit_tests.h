@@ -10,6 +10,7 @@
 #include "test/config/config_key_lookup_test.h"
 #include "test/config/config_value_factory_test.h"
 #include "test/account/checking_account_test.h"
+#include "test/account/savings_account_test.h"
 #include <iostream>
 #include <vector>
 
@@ -17,15 +18,20 @@ class UnitTests {
 
 public:
 	UnitTests() {
-		this->tests = {new UnitTestTest(),
-		               new DateTest(),
-		               new DollarsComparisonsTest(),
-		               new DollarsOperationsTest(),
-		               new CommandLineArgumentsTest(),
-		               new ConfigKeyLookupTest(),
-		               new ConfigValueFactoryTest(),
-		               new ArgumentLoaderTest(),
-		               new CheckingAccountTest()};
+		this->tests = {
+			new UnitTestTest(),
+			new DateTest(),
+			new DollarsComparisonsTest(),
+			new DollarsOperationsTest(),
+			
+			new CommandLineArgumentsTest(),
+			new ConfigKeyLookupTest(),
+			new ConfigValueFactoryTest(),
+			new ArgumentLoaderTest(),
+			
+			new CheckingAccountTest(),
+			new SavingsAccountTest(),
+		};
 	}
 	
 	~UnitTests() {

@@ -61,6 +61,15 @@ public:
 		return this->dayOfWeek;
 	}
 	
+	uint8_t getDaysInMonth() const {
+		if(this->leapYear) {
+			return Date::leapMonthLengths[this->date.date.month - 1];
+		}
+		else {
+			return Date::nonleapMonthLengths[this->date.date.month - 1];
+		}
+	}
+	
 	Date const& operator++() {
 		if(!(this->lastDayOfMonth)) {
 			setDayOfMonth(this->date.date.dayOfMonth + 1);
@@ -130,13 +139,7 @@ private:
 	}
 	
 	void setDayOfMonth(uint8_t dayOfMonth) {
-		uint8_t daysInMonth;
-		if(this->leapYear) {
-			daysInMonth = Date::leapMonthLengths[this->date.date.month - 1];
-		}
-		else {
-			daysInMonth = Date::nonleapMonthLengths[this->date.date.month - 1];
-		}
+		uint8_t daysInMonth = this->getDaysInMonth();
 		
 		if((dayOfMonth == 0) || (dayOfMonth > daysInMonth)) {
 			throw std::out_of_range("Day does not exist");

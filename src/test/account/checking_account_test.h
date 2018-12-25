@@ -43,7 +43,7 @@ private:
 		std::string const accountName = "My Negative Account";
 		
 		ASSERT_THROW(CheckingAccount account(accountName, negativeBalance),
-		              Account::Overdraw);
+		             Account::Overdraw);
 	}
 	
 	void deposit() {
